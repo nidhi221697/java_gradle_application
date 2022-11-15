@@ -43,7 +43,7 @@ pipeline{
                
                             docker login -u admin -p $docker_pass 44.207.6.86:8083
                             docker image push 44.207.6.86:8083/springapp:v1.${VERSION}
-                            docker image push 44.207.6.86:8083/$JOB_NAME:latest
+                            docker image push 44.207.6.86:8083/springapp:latest
 
                             docker image rmi 44.207.6.86:8083/springapp:v1.${VERSION}
                             docker image rmi 44.207.6.86:8083/springapp:latest
