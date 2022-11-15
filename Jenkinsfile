@@ -36,22 +36,20 @@ pipeline{
                  script{
                     withCredentials([string(credentialsId: 'docker_password', variable: 'docker_pass')]) {
                               sh '''
-
-                            docker image build -t springapp:v1.${VERSION} .
-                            docker image tag springapp:v1.${VERSION} 44.207.6.86:8083/springapp:v1.${VERSION}
-                            docker image tag springapp:v1.${VERSION} 44.207.6.86:8083/springapp:latest
-               
-                            docker login -u admin -p $docker_pass 44.207.6.86:8083
-                            docker image push 44.207.6.86:8083/springapp:v1.${VERSION}
-                            docker image push 44.207.6.86:8083/springapp:latest
-
-                            docker image rmi 44.207.6.86:8083/springapp:v1.${VERSION}
-                            docker image rmi 44.207.6.86:8083/springapp:latest
+                                docker build -t 44.207.6.86:8083/springapp:${VERSION} .
+                                docker login -u admin -p $docker_pass 44.207.6.86:8083
+                                docker push  44.207.6.86:8083/springapp:${VERSION}
+                                docker rmi 44.207.6.86:8083/springapp:${VERSION}
                              '''
                      }
                  }
              }
          }  
     }
+    post {
+		always {
+			mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "vikash.mrdevops@gmail.com";  
+         }
+	   }
 }
 // docker login -u admin -p nexus 44.207.6.86:8083
