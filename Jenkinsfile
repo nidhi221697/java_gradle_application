@@ -36,10 +36,17 @@ pipeline{
                  script{
                     withCredentials([string(credentialsId: 'docker_password', variable: 'docker_pass')]) {
                               sh '''
-                                 docker build -t 44.207.6.86:8083/springapp:${VERSION} .
-                                 docker login -u admin -p $docker_pass 44.207.6.86:8083 
-                                 docker push  44.207.6.86:8083/springapp:${VERSION}
-                                 docker rmi 44.207.6.86:8083/springapp:${VERSION}
+
+                            docker image build -t springapp:${VERSION} .
+                            docker image tag springapp:v1.${VERSION} 44.207.6.86:8083/springapp:v1.${VERSION}
+                            docker image tag springapp:v1.${VERSION} 44.207.6.86:8083/springapp:latest
+               
+                            docker login -u admin -p $docker_pass 44.207.6.86:8083
+                            docker image push 44.207.6.86:8083/springapp:v1.${VERSION}
+                            docker image push 44.207.6.86:8083/$JOB_NAME:latest
+
+                            docker image rmi 44.207.6.86:8083/springapp:v1.${VERSION}
+                            docker image rmi 44.207.6.86:8083/springapp:latest
                              '''
                      }
                  }
