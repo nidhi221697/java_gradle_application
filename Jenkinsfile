@@ -1,3 +1,4 @@
+
 pipeline{
     agent any 
     environment{
@@ -12,13 +13,23 @@ pipeline{
             }
             steps{
                 script{
+                    
                     withSonarQubeEnv(credentialsId: 'sonar-token') {
-                            
-                            sh 'chmod +x gradlew'
-                            sh './gradlew sonarqube --debug output'
+                        
+                        sh 'mvn clean package sonar:sonar'
                     }
-                }  
+                   }
             }
         }
+        stage('Quality Gate Status'){
+                
+                steps{
+                    
+                    script{
+                        
+                        waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                    }
+                }
+            }
     }
 }
