@@ -46,12 +46,10 @@ pipeline{
              }
          }  
     }
-    post {
+post {
 		always {
-			//emailext attachLog: true, body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: 'vikash.mrdevops@gmail.com'  
-            //emailext body: 'Jenkins SuccessFully Triggered', subject: 'Test Email', to: 'vikash.mrdevops@gmail.com'
-         emailext attachLog: true, body: 'Test Email Triggered from Jenkins', subject: 'Test Email', to: 'vikashashoke@gmail.com'
-         }
-	   }
+			mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "vikash.mrdevops@gmail.com";  
+		}
+	}
 }
 // docker login -u admin -p nexus 44.207.6.86:8083
