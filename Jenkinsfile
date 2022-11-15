@@ -37,7 +37,7 @@ pipeline{
                     withCredentials([string(credentialsId: 'docker_password', variable: 'docker_pass')]) {
                               sh '''
 
-                            docker image build -t springapp:${VERSION} .
+                            docker image build -t springapp:v1.${VERSION} .
                             docker image tag springapp:v1.${VERSION} 44.207.6.86:8083/springapp:v1.${VERSION}
                             docker image tag springapp:v1.${VERSION} 44.207.6.86:8083/springapp:latest
                
